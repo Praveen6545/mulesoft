@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="bc3fddcc-43a7-4c32-a00b-18728f89d3d4" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="123456Flow" doc:id="8ca97037-c032-4464-a20e-e3aea0fa29c8" >
+		<http:listener doc:name="Listener" doc:id="36365588-3717-4f22-bf08-6dd0abb4d7e9" config-ref="HTTP_Listener_config" path="/exam4"/>
+		<flow-ref doc:name="Flow Reference" doc:id="eb75472b-6b80-4934-b058-6d8c9f5efb5f" name="private"/>
+		<set-payload value="parent completed" doc:name="Set Payload" doc:id="dbcf00eb-2c3b-40a7-be3f-b1735dee9a4e" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="66110eec-1a06-4c44-b2b0-835cb874249b" >
+				<set-payload value="parent error" doc:name="Set Payload" doc:id="99b8d2a9-0abd-4732-9ae4-a1d116de7b90" />
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="private" doc:id="62078376-0674-452a-b024-5ed160df4d96" >
+		<validation:is-number doc:id="3a5b5792-2963-4895-91b0-ffb52f6e331c" value="#[payload]" numberType="INTEGER" message="Validation error "/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ecc54774-9109-4d20-8529-3fa64ff089ce" >
+				<set-payload value="child error" doc:name="Set Payload" doc:id="09371a57-268a-436d-a515-c12835c5d69d" />
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+</mule>
