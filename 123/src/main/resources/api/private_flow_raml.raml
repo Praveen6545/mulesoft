@@ -1,0 +1,28 @@
+#%RAML 1.0
+title: private_flow_raml
+/flights:
+  get:
+    responses:
+      200:
+      400:
+        
+  /airlines:
+    get:
+      queryParameters:
+        code: string
+      responses:
+        200:
+        400:
+          
+/accounts:
+  get:
+    responses:
+      200:
+      400:
+  post:
+    responses:
+      201:
+      400:
+      
+        
+        
